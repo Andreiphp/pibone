@@ -1,0 +1,140 @@
+<div class="nutrition-header-wr" (window:resize)= "resize($event)">
+    <header>
+        <div class="header-area">
+            <div class="wr">
+                <div class="center">
+                    <div class="header-search">
+                        <form>
+                           <div class="group">
+                                <input type="text" placeholder="Поиск в каталоге...">
+                                <div class="search-input">
+                                    <button class="search-btn" type='button'><img alt='' src="../../../assets//image//icon/magnifier_icon-icons.com_48267.png"></button>
+                                </div>
+                           </div>
+                        </form>
+                    </div>
+                    <div class="header-logo">
+                            <div class="logo">
+                                    <a routerLink="/" title="Логотип">
+                                        <img src="../../../assets/image/logo/pedona.png" alt="логотип компании">
+                                    </a>
+                                </div>
+                    </div>
+                    <div class="header-cart">
+                        <div class="header-cart-area">
+                            <div class="btn-cart">
+                                <button (click)=openSinCart() class="toggle-cart">
+                                    <img src="../../../assets/image/icon/14062.png">
+                                    <span class="count-style">52</span>
+                                </button>
+                                <div [style.height]="flagOpenSinCart === true ? '450px' : '0'" class="drop-menu">
+                                    <div class="shop-cart-content">
+                                        <ul class="ul-cart">
+                                            <li class="singl-cart-product">
+                                                <div class="sing-car-img">
+                                                    <a href="">
+                                                        <img src="../../../assets//image//logo/nastolnyie-lampyi-315x400.png">
+                                                    </a>
+                                                    <span class="count-cart">2</span>
+                                                </div>
+                                                <div class="sing-car-title">
+                                                    <h4>светильники НАСТЕННЫЕ</h4>
+                                                    <p class="sin-car-price">
+                                                        120$
+                                                    </p>
+                                                </div>
+                                                <div class="sin-car-delite">
+                                                    <a href="">
+                                                        <i class="fa fa-close"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li class="singl-cart-product">
+                                                <div class="sing-car-img">
+                                                    <a href="">
+                                                        <img alt='' src="../../../assets//image//logo/nastolnyie-lampyi-315x400.png">
+                                                    </a>
+                                                    <span class="count-cart">2</span>
+                                                </div>
+                                                <div class="sing-car-title">
+                                                    <h4>светильники НАСТЕННЫЕ</h4>
+                                                    <p class="sin-car-price">
+                                                        120$
+                                                    </p>
+                                                </div>
+                                                <div class="sin-car-delite">
+                                                    <a href="">
+                                                        <i class="fa fa-close"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li class="singl-cart-product">
+                                                <div class="sing-car-img">
+                                                    <a href="">
+                                                        <img alt='' src="../../../assets//image//logo/nastolnyie-lampyi-315x400.png">
+                                                    </a>
+                                                    <span class="count-cart">2</span>
+                                                </div>
+                                                <div class="sing-car-title">
+                                                    <h4>светильники НАСТЕННЫЕ</h4>
+                                                    <p class="sin-car-price">
+                                                        120$
+                                                    </p>
+                                                </div>
+                                                <div class="sin-car-delite">
+                                                    <a href="">
+                                                        <i class="fa fa-close"></i>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="shopping-cart-total">
+                                            <h4>Сумма
+                                                <span>320$</span>
+                                            </h4>
+                                        </div>
+                                        <div class="sin-cart-btn">
+                                            <a href="">Заказать</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class='wr'>
+            <nav class="menu">
+                <a class="menu-toggle full" (click)='showMainMenu()' [ngClass]="!flagMainMenu ? ' menu-toggle full rotate' : 'menu-toggle full'">
+                    <i class="fa fa-bars"></i>
+                    Меню
+                </a>
+                <ul id="menu-main" class="menu-main" [ngClass]="!flagMainMenu ? ' openMain-menu' : 'closeMain-menu'">
+                    <li><a class="menu-link" routerLinkActive="active_link" [routerLinkActiveOptions]="{exact:true}"
+                           routerLink="">Главная</a></li>
+                    <li class="show-menu"  (click)='openMobileMenu($event)'>
+                        <a id="m"  class="menu-link catalog_link" [ngClass]="flegSubCat ? 'menu-link catalog_link rotate_l' : 'menu-link catalog_link'"
+                        routerLinkActive="active_link">Каталог</a>
+                        <div class="menu_catalog_list" [ngClass]="flegSubCat ? 'opensubCat' : 'closesubCat'">
+                            <ul class="cat-li">
+                                <li><a routerLink="/" (click)='hideAllMenu()'>Влагозащищенные светильники</a></li>
+                                <li><a routerLink="/"  (click)='hideAllMenu()'>Комплектующие</a></li>
+                                <li><a routerLink="/"  (click)='hideAllMenu()'>Лампочки</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a  class="menu-link"
+                                                      routerLinkActive="active_link"
+                                                      routerLink="/sale">Акции</a>
+                    
+                    </li>
+                    <li><a class="menu-link"
+                           routerLinkActive="active_link" routerLink="/about">О нас</a></li>
+                    <li><a class="menu-link" routerLinkActive="active_link" routerLink="/contact">Контакты</a></li>
+                   
+                </ul>
+            </nav>
+        </div>
+    </header>
+</div>
