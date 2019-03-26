@@ -19,62 +19,56 @@ export class HeaderMenuComponent implements OnInit {
     constructor(public hero: MenuServices) {
         this.flagOpenSinCart = false;
         this.disalaySubCat = 'none';
-        this.displayMainMenu = 'none'
+        this.displayMainMenu = 'none';
         this.flegSubCat = false;
         this.subCatHeigth = 0;
         this.flagMainMenu = true;
         this.minHeigth = 0;
-        if(window.innerWidth >= 990){
+        if (window.innerWidth >= 990) {
             this.flagMainMenu = true;
         }
-        window.onresize = function(event){
-            
+        window.onresize = function(event) {
                 this.flegSubCat = false;
-                if(window.innerWidth < 990){
+                if (window.innerWidth < 990) {
                     this.flagMainMenu = true;
                 }
                 this.resize(event);
-
-            
         }.bind(this);
-     
-      
     }
-  
     openSinCart() {
         this.flagOpenSinCart = !this.flagOpenSinCart;
     }
 
-    openMobileMenu(event){
-
-        if(event.target.id === 'm'){
-            if(window.innerWidth <= 990){
+    openMobileMenu(event) {
+        if (event.target.id === 'm') {
+            if (window.innerWidth <= 990) {
                 this.flegSubCat = !this.flegSubCat;
-               
     }
         }
-    
 }
-    showMainMenu(){
+    showMainMenu() {
         this.flagMainMenu  = !this.flagMainMenu;
+        if (this.flagMainMenu) {
+          this.flegSubCat = false;
+        }
     }
 
-    hideAllMenu(){
+    hideAllMenu() {
         this.flagMainMenu = true;
         this.flegSubCat = false;
     }
-   private resize(event){
-    if(event.target.innerWidth >= 990){
+   private resize(event) {
+    if (event.target.innerWidth >= 990) {
         this.displayMainMenu = 'flex';
-    }else{
+    } else {
         this.flagMainMenu = true;
     }
     }
 
     ngOnInit() {
-        if(window.innerWidth >= 990){
+        if (window.innerWidth >= 990) {
             this.displayMainMenu = 'flex';
-        }else{
+        } else {
             this.displayMainMenu = 'none';
         }
 
