@@ -22,6 +22,7 @@ import {MenuServices} from './services/menu.service';
 import { MainSectionComponent } from './components/main-section/main-section.component';
 import { MainLatestProductComponent } from './components/main-latest-product/main-latest-product.component';
 import { TestComponent } from './components/test/test.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -45,9 +46,8 @@ import { TestComponent } from './components/test/test.component';
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
+        BrowserAnimationsModule,
         AppRouterModule,
-        
-
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
