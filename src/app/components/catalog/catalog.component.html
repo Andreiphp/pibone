@@ -1,3 +1,7 @@
 <p>
   catalog works!
 </p>
+<button (click)="isVisible = !isVisible">check</button>
+<div
+[@divTrigger] = "isVisible ? 'show' : 'hide'"
+*ngIf ="isVisible">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas reprehenderit, voluptatem, et laudantium quasi nulla eos harum officia, odio quas est. Atque minus fugit aperiam. Ducimus dolor nisi exercitationem consequuntur!</div>

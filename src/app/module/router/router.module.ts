@@ -10,7 +10,7 @@ import {AuthGuard} from '../../guards/auth.guard';
 import {LoginComponent} from '../../components/login/login.component';
 import { TestComponent } from '../../components/test/test.component';
 
-let childrenRouter: Routes = [
+const childrenRouter: Routes = [
     {path: 'newproduct', component: AdminNewProductComponent},
     {path: 'redactproduct', component: AdminRedactProdComponent}
 ];

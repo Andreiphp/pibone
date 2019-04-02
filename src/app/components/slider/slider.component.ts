@@ -1,10 +1,25 @@
 import {Component, ElementRef, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import {initPositions} from '../../interfaces/sliderSetting.interfaces';
+import { trigger, state, style } from '@angular/animations';
 
 @Component({
     selector: 'app-slider',
     templateUrl: './slider.component.html',
-    styleUrls: ['./slider.component.sass']
+    styleUrls: ['./slider.component.sass'],
+    animations: [
+      trigger('clickDiv', [
+        state('start', style({
+          backgroundColor: 'blue',
+          width: '150px',
+          height: '150px'
+        })),
+        state('end', style({
+          backgroundColor: 'red',
+          width: '300px',
+          height: '300px'
+        }))
+      ])
+    ]
 })
 export class SliderComponent implements OnInit , AfterViewInit {
    images: HTMLAllCollection;
