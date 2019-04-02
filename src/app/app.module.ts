@@ -46,6 +46,7 @@ import { TestComponent } from './components/test/test.component';
         FormsModule,
         ReactiveFormsModule,
         HttpClientModule,
+        BrowserAnimationsModule,
         AppRouterModule,
     ],
     providers: [

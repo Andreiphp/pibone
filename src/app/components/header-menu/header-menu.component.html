@@ -27,7 +27,7 @@
                                     <img src="../../../assets/image/icon/14062.png">
                                     <span class="count-style">52</span>
                                 </button>
-                                <div [style.height]="flagOpenSinCart === true ? '450px' : '0'" class="drop-menu">
+                                <div @openBascket *ngIf ="flagOpenSinCart" class="drop-menu">
                                     <div class="shop-cart-content">
                                         <ul class="ul-cart">
                                             <li class="singl-cart-product">
@@ -110,29 +110,47 @@
                     <i class="fa fa-bars"></i>
                     Меню
                 </a>
-                <ul id="menu-main" class="menu-main" [ngClass]="!flagMainMenu ? ' openMain-menu' : 'closeMain-menu'">
-                    <li><a class="menu-link" routerLinkActive="active_link" [routerLinkActiveOptions]="{exact:true}"
-                           routerLink="">Главная</a></li>
-                    <li class="show-menu"  (click)='openMobileMenu($event)'>
-                        <a id="m"  class="menu-link catalog_link" [ngClass]="flegSubCat ? 'menu-link catalog_link rotate_l' : 'menu-link catalog_link'"
-                        routerLinkActive="active_link">Каталог</a>
-                        <div class="menu_catalog_list" [ngClass]="flegSubCat ? 'opensubCat' : 'closesubCat'">
-                            <ul class="cat-li">
-                                <li><a routerLink="/catalog" (click)='hideAllMenu()'>Влагозащищенные светильники</a></li>
-                                <li><a routerLink="/"  (click)='hideAllMenu()'>Комплектующие</a></li>
-                                <li><a routerLink="/"  (click)='hideAllMenu()'>Лампочки</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li><a  class="menu-link"
+                <div id="menu-main" class="menu-main" @openBascket  *ngIf="!flagMainMenu">
+                    <span>
+                        <a class="menu-link"
                             routerLinkActive="active_link"
-                            routerLink="/sale">Акции</a>
-                    </li>
-                    <li><a class="menu-link"
-                           routerLinkActive="active_link" routerLink="/about">О нас</a></li>
-                    <li><a class="menu-link" routerLinkActive="active_link" routerLink="/contact">Контакты</a></li>
-
-                </ul>
+                            [routerLinkActiveOptions]="{exact:true}"
+                            routerLink="">Главная
+                        </a>
+                    </span>
+                    <span class="show-menu"  (click)='openMobileMenu($event)' (mouseover) ="flegSubCat = true" (mouseleave) ="flegSubCat = false">
+                        <a id="m"
+                            class="menu-link catalog_link"
+                            [ngClass]="flegSubCat ? 'menu-link catalog_link rotate_l' : 'menu-link catalog_link'"
+                            routerLinkActive="active_link">Каталог
+                        </a>
+                        <div class="menu_catalog_list" @openBascket *ngIf='flegSubCat'>
+                            <div class="cat-li">
+                                <span><a routerLink="/" (click)='hideAllMenu()'>Влагозащищенные светильники</a></span>
+                                <span><a routerLink="/"  (click)='hideAllMenu()'>Комплектующие</a></span>
+                                <span><a routerLink="/"  (click)='hideAllMenu()'>Лампочки</a></span>
+                            </div>
+                        </div>
+                    </span>
+                    <span>
+                        <a  class="menu-link"
+                            routerLinkActive="active_link"
+                            routerLink="/sale">Акции
+                        </a>
+                    </span>
+                    <span>
+                        <a class="menu-link"
+                           routerLinkActive="active_link"
+                           routerLink="/about">О нас
+                        </a>
+                    </span>
+                    <span>
+                        <a class="menu-link"
+                            routerLinkActive="active_link"
+                            routerLink="/contact">Контакты
+                        </a>
+                    </span>
+                </div>
             </nav>
         </div>
     </header>

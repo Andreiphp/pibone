@@ -177,7 +177,7 @@ export class SliderComponent implements OnInit , AfterViewInit {
         (this.images[this.currentSlide] as any).style.transform = 'translate3d(' + (curch) + 'px,' + 0 + 'px,' + 0 + 'px' + ')';
         (this.DivWrapper[this.currentSlide] as any).style.transition = '1s';
         (this.DivWrapper[this.currentSlide] as any).style.transform = 'translate3d(' + (current) + 'px,' + 0 + 'px,' + 0 + 'px' + ')';
-        (this.DivWrapper[this.currentSlide] as any).style.zIndex = 2;
+        (this.DivWrapper[this.currentSlide] as any).style.zIndex = zIndexN;
         (this.images[this.nextSlideImg] as any).style.transition = transitionN;
         (this.images[this.nextSlideImg] as any).style.transform = 'translate3d(' + (nextch) + 'px,' + 0 + 'px,' + 0 + 'px' + ')';
         (this.DivWrapper[this.nextSlideImg] as any).style.transition = transitionN;
