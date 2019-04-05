@@ -41,12 +41,14 @@ export class SliderComponent implements OnInit, AfterViewInit {
   flagToBack: boolean;
   flagnewSlideMoov: boolean;
   InitPosition: number;
+  flagBtnStart: boolean;
   private countSliders: number;
 
   @ViewChild('sliderSection') sliderSection: ElementRef;
 
   constructor(public el: ElementRef) {
     this.flagMoov = false;
+    this.flagBtnStart = true;
     window.ondragstart = () => false;
     this.moovX = 0;
     window.onresize = () => {
@@ -66,17 +68,31 @@ export class SliderComponent implements OnInit, AfterViewInit {
     this.currentSlide === 0 ? this.prevSlideImg = this.images.length - 1 : this.prevSlideImg = this.currentSlide - 1;
   }
   nextSlide() {
-    this.moovEndSetParamNext();
-    setTimeout(() => {
-      this.upsliders();
-      this.changeNumberSlideTo();
-      this.setCurentStyle(this.nextSlideImg, 1, 0, '0s', -this.InitPosition / 2, this.InitPosition );
-    }, 1000);
+    if (this.flagBtnStart) {
+      this.flagBtnStart = false;
+      this.setCurentStyle(this.nextSlideImg, 1, 0, '0s', -this.InitPosition / 2, this.InitPosition);
+      this.setCurentStyle(this.prevSlideImg, 1, 0, '0s', this.InitPosition / 2, -this.InitPosition);
+      requestAnimationFrame(this.moovEndSetParamNext.bind(this));
+      setTimeout(() => {
+        this.upsliders();
+        this.changeNumberSlideTo();
+        this.flagBtnStart = true;
+      }, 1000);
+    }
   }
 
   prevSlide() {
-    //  this.moovEndSetParamPrev();
-    this.changeNumberSlideBack();
+    if (this.flagBtnStart) {
+      this.flagBtnStart = false;
+      this.setCurentStyle(this.prevSlideImg, 1, 0, '0s', this.InitPosition / 2, -this.InitPosition);
+      this.setCurentStyle(this.nextSlideImg, 1, 0, '0s', -this.InitPosition / 2, this.InitPosition);
+      requestAnimationFrame(this.moovEndSetParamPrev.bind(this));
+      setTimeout(() => {
+        this.upsliders();
+        this.changeNumberSlideBack();
+        this.flagBtnStart = true;
+      }, 1000);
+    }
   }
 
   mouseDoun(event: MouseEvent): boolean {
@@ -119,30 +135,30 @@ export class SliderComponent implements OnInit, AfterViewInit {
     return false;
   }
   endSlide(event): void {
-    // if (this.flagToBack) {
-    //     if (Math.abs(this.moovX) > this.InitPosition  / 2) {
-    //         this.moovEndSetParam(-this.InitPosition, this.InitPosition / 2, 0,
-    //            0, this.InitPosition, -this.InitPosition / 2, 0, '0s', 3, '1s');
-    //         this.changeNumberSlideTo();
-    //      } else {
-    //         this.moovEndSetParam(0, 0, this.InitPosition, -this.InitPosition / 2,
-    //            -this.InitPosition, this.InitPosition / 2, 0, '0s',  3, '1s');
-    //     }
-    // } else {
-    //      if (Math.abs(this.moovX) > this.InitPosition / 2) {
-    //         this.moovEndSetParam(
-    //           this.InitPosition, -this.InitPosition / 2,
-    //           -this.InitPosition, this.InitPosition / 2, 0, 0, 3, '1s', 0, '0');
-    //            this.changeNumberSlideBack();
-    //     } else {
-    //         this.moovEndSetParam(0, 0, this.InitPosition, -this.InitPosition / 2,
-    //            -this.InitPosition, this.InitPosition / 2, 3, '1s', 0, '0');
-    //     }
-    // }
-    // this.flagMoov = false;
-    // document.onmousemove = null;
-    // document.onmouseup = null;
-    // return false;
+    if (this.flagToBack) {
+        if (Math.abs(this.moovX) > this.InitPosition  / 2) {
+            this.moovEndSetParam(-this.InitPosition, this.InitPosition / 2, 0,
+               0, this.InitPosition, -this.InitPosition / 2, 0, '0s', 3, '1s');
+            this.changeNumberSlideTo();
+         } else {
+            this.moovEndSetParam(0, 0, this.InitPosition, -this.InitPosition / 2,
+               -this.InitPosition, this.InitPosition / 2, 0, '0s',  3, '1s');
+        }
+    } else {
+         if (Math.abs(this.moovX) > this.InitPosition / 2) {
+            this.moovEndSetParam(
+              this.InitPosition, -this.InitPosition / 2,
+              -this.InitPosition, this.InitPosition / 2, 0, 0, 3, '1s', 0, '0');
+               this.changeNumberSlideBack();
+        } else {
+            this.moovEndSetParam(0, 0, this.InitPosition, -this.InitPosition / 2,
+               -this.InitPosition, this.InitPosition / 2, 3, '1s', 0, '0');
+        }
+    }
+    this.flagMoov = false;
+    document.onmousemove = null;
+    document.onmouseup = null;
+
   }
   leaveMouse(): boolean {
     this.flagMoov = false;
@@ -174,12 +190,10 @@ export class SliderComponent implements OnInit, AfterViewInit {
     this.setCurentStyle(this.currentSlide, 1, 1, '1s', this.InitPosition / 2, -this.InitPosition);
     this.setCurentStyle(this.nextSlideImg, 3, 1, '1s', 0, 0);
   }
-  // moovEndSetParamPrev(): void {
-  //     this.setCurentStyle(this.currentSlide, 1, -this.InitPosition / 2, this.InitPosition);
-  //     this.setCurentStyle(this.nextSlideImg, 1, this.InitPosition / 2, -this.InitPosition);
-  //     this.setCurentStyle(this.prevSlideImg, 3, 0, 0);
-  //     this.images[0].addEventListener('transitionend', this.outAnimate);
-  // }
+  moovEndSetParamPrev(): void {
+    this.setCurentStyle(this.currentSlide, 1, 1, '1s', -this.InitPosition / 2, this.InitPosition);
+    this.setCurentStyle(this.prevSlideImg, 3, 1, '1s', 0, 0);
+  }
   outAnimate() {
     console.log('out');
   }
@@ -221,10 +235,10 @@ export class SliderComponent implements OnInit, AfterViewInit {
   }
   upsliders() {
     for (let i = 0; i <= this.countSliders; i += 1) {
-      if (i !== this.currentSlide) {
+      if (i !== this.nextSlideImg) {
         this.resetStyle(i, 1, 1, '0s');
       } else {
-          this.resetStyle(i, 3, 1, '1s');
+        this.resetStyle(i, 3, 1, '1s');
       }
     }
   }
@@ -236,18 +250,15 @@ export class SliderComponent implements OnInit, AfterViewInit {
           this.setCurentStyle(i, 3, 1, '0s', 0, 0);
         } else if (i === 2) {
           this.setCurentStyle(i, 1, 1, '0s', -this.InitPosition / 2, this.InitPosition);
-        } else if (i === 1) {
+        } else if (i === 0) {
           this.setCurentStyle(i, 1, 1, '0s', this.InitPosition / 2, -this.InitPosition);
         } else {
           this.setCurentStyle(i, 0, 0, '0s', this.InitPosition / 2, -this.InitPosition);
         }
       }
+    } else {
+      this.setCurentStyle(0, 3, 1, '0s', 0, 0);
+      this.setCurentStyle(1, 1, 1, '0s', -this.InitPosition / 2, this.InitPosition);
     }
   }
-
-  // initImage(): void {
-  //     this.setCurentStyle(this.currentSlide, 3, 0, 0);
-  //     this.setCurentStyle(this.nextSlideImg, 1, -this.InitPosition / 2, this.InitPosition);
-  //     this.setCurentStyle(this.prevSlideImg, 1, this.InitPosition / 2, -this.InitPosition);
-  // }
 }
