@@ -7,17 +7,15 @@ import { RequestsService } from 'src/app/services/requests.service';
 })
 export class MainComponent implements OnInit {
   user: any;
-  constructor(public request: RequestsService) { }
+  titleLastP: string;
+  messageLastP: string;
+  constructor(public request: RequestsService) {
+    this.titleLastP = 'New Trending Products';
+    this.messageLastP = 'Accumsan vitae pede lacus ut ullamcorper sollicitudin quisque libero est';
 
-  getDataTest(){
-    //this.request.get_one_user();
+   }
 
-   //this.request.concatObserv();
-
-   //this.request.gitHun().subscribe(res=>{})
-  }
-
-  getDataTest2(){
+  getDataTest2() {
     console.log('click2');
   }
   ngOnInit() {

@@ -1,0 +1,81 @@
+.latest-product-slider
+  padding-left: 10px
+  padding-right: 10px
+  .swipper-wrapper
+    background: rgba(0, 0, 0, 0)
+  .wr-slider
+    padding: 15px
+    margin-top: -30px
+    margin-bottom: -30px
+    .product-layout
+      padding: 15px
+      width: 200px
+      display: inline-block
+      .product-inner
+        .product-image
+          overflow: hidden
+          position: relative
+          .product-label
+            position: absolute
+            top: 20px
+            font-size: 12px
+            height: 23px
+            width: 50px
+            line-height: 23px
+            text-align: center
+            text-transform: capitalize
+            font-weight: 400
+            border-radius: 3px
+            color: #fff
+          .label-new
+            right: 20px
+            background-color: black
+          .label-sale
+            left: 20px
+            background-color: #cc2121
+          img
+            width: 100%
+            height: auto
+        .product-caption
+          padding-top: 15px
+          .product-name
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+            max-height: 3em;
+            font-weight: 400;
+            margin-bottom: 11px;
+            margin-top: 8px;
+            text-transform: capitalize;
+            position: relative;
+            overflow: hidden;
+            line-height: 1.5;
+            a
+              font-size: 14px
+              position: relative
+              &:after
+                content: ""
+                display: block
+                bottom: -2px
+                left: 0
+                right: 0
+                width: 0
+                height: 1px
+                background-color: #cc2121
+                transition: .7s
+              &:hover:after
+                width: 100%
+        .product-price
+          .old-price
+            font-size: 14px
+            font-weight: 400
+            padding-right: 8px
+            text-decoration: line-through
+            display: inline-block
+          .new-price
+            font-size: 18px
+            font-weight: 500
+            color: #cc2121
+
+

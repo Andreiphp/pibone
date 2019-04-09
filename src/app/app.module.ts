@@ -23,6 +23,7 @@ import {MenuServices} from './services/menu.service';
 import { MainSectionComponent } from './components/main-section/main-section.component';
 import { MainLatestProductComponent } from './components/main-latest-product/main-latest-product.component';
 import { TestComponent } from './components/test/test.component';
+import { LatestProductSliderComponent } from './components/latest-product-slider/latest-product-slider.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -38,7 +39,8 @@ import { TestComponent } from './components/test/test.component';
         SliderComponent,
         MainSectionComponent,
         MainLatestProductComponent,
-        TestComponent
+        TestComponent,
+        LatestProductSliderComponent
     ],
     imports: [
         BrowserModule,

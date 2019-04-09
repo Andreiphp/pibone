@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { RequestsService } from 'src/app/services/requests.service';
-import { Unsubscribable, from, pipe } from 'rxjs';
-import {fromEvent} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Unsubscribable } from 'rxjs';
 @Component({
   selector: 'app-main-latest-product',
   templateUrl: './main-latest-product.component.html',
@@ -10,11 +8,47 @@ import {map} from 'rxjs/operators';
 })
 export class MainLatestProductComponent implements OnInit {
   unsubscribe: Unsubscribable;
+  @Input() title;
+  @Input() message;
+  products: any;
   constructor(public request: RequestsService) {
+    this.products = [
+      {
+        id: '1',
+        title: 'werty',
+        price: 'image',
+        image: 'product-10.jpg',
+    },
+      {
+        id: '1',
+        title: 'werty',
+        price: 'image',
+        image: 'product-10.jpg',
+    },
+      {
+        id: '1',
+        title: 'werty',
+        price: 'image',
+        image: 'product-10.jpg',
+    },
+      {
+        id: '1',
+        title: 'werty',
+        price: 'image',
+        image: 'product-11.jpg',
+    },
+      {
+        id: '1',
+        title: 'werty',
+        price: 'image',
+        image: 'product-11.jpg',
+    },
+    ];
 
-   }
+  }
 
   ngOnInit() {
+    console.log(this.title);
   }
 
 }
