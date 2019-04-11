@@ -43,6 +43,24 @@ export class MainLatestProductComponent implements OnInit {
         price: 'image',
         image: 'product-11.jpg',
     },
+      {
+        id: '1',
+        title: 'werty',
+        price: 'image',
+        image: 'product-11.jpg',
+    },
+      {
+        id: '1',
+        title: 'werty',
+        price: 'image',
+        image: 'product-11.jpg',
+    },
+      {
+        id: '1',
+        title: 'werty',
+        price: 'image',
+        image: 'product-11.jpg',
+    },
     ];
 
   }

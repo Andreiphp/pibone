@@ -1,30 +1,7 @@
 <div class="latest-product-slider">
     <div class="wr-slider">
         <div class="swipper-wrapper">
-            <article class="product-layout" *ngFor="let product of products">
-                <div class="product-inner">
-                    <div class="product-image">
-                        <div class="product-label label-new">new</div>
-                        <div class="product-label label-sale">7%</div>
-                        <a>
-                            <img alt="" src="../../../assets/image/slider/{{product.image}}">
-                        </a>
-                        <div class="actons-links">
-                            <!-- сделать отдельным компонентом -->
-                        </div>
-
-                    </div>
-                    <div class="product-caption">
-                        <h4 class="product-name">
-                            <a href="/">Strive Shoulder Pack</a>
-                        </h4>
-                        <div class="product-price">
-                            <p class="old-price">42</p>
-                            <p class="new-price">222</p>
-                        </div>
-                    </div>
-                </div>
-            </article>
+            <app-pre-view-product [product]="product " *ngFor="let product of products "></app-pre-view-product>
         </div>
     </div>
 </div>
