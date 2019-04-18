@@ -1,9 +1,11 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { sliderState } from '../latest-product-slider/latest-slider.animations';
 
 @Component({
   selector: 'app-latest-product-slider',
   templateUrl: './latest-product-slider.component.html',
-  styleUrls: ['./latest-product-slider.component.sass']
+  styleUrls: ['./latest-product-slider.component.sass'],
+  animations: [sliderState],
 })
 export class LatestProductSliderComponent implements OnInit, AfterViewInit {
   @Input() products;
@@ -41,7 +43,6 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     this.productsList = this.sliderWrapper.getElementsByTagName('app-pre-view-product');
     this.firstElement = this.productsList[0].getBoundingClientRect();
     this.lastElement = this.productsList[this.productsList.length - 1].getBoundingClientRect();
-    this.findNearProducts();
   }
   setStyleWrapper() {
     this.moovDiv.style.transform = 'translate3d(0px, 0px, 100px)';
@@ -49,12 +50,7 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     this.moovDiv.style.transitionDelay = '0.2s';
   }
   nextSlide() {
-    this.findNearProducts();
-    if (this.alfaHide) {
-      this.products[this.alfaHide].title = 'ttttttttttttttttttttt';
-    }
-    this.products[this.alfaVisible].title = 'yyyyyyyyyyyyyyyyyyy';
-    console.log(this.products);
+    this.findNearProductsNext();
     let position = +this.parseStyle().toFixed(2);
     this.moovDiv.style.transform = 'translate3d(' + (position - +this.firstElement.width.toFixed(2)) + 'px,' + '0px,' + 100 + 'px' + ')';
   }
@@ -62,16 +58,27 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     return +(this.moovDiv.style.transform.match(/\((-?\d*\.?\d*).*\)/)[1]);
   }
   prevSlide() {
+    this.findNearProductsPrev();
     let position = +this.parseStyle().toFixed(2);
     this.moovDiv.style.transform = 'translate3d(' + (position + +this.firstElement.width.toFixed(2)) + 'px,' + '0px,' + 100 + 'px' + ')';
   }
-  findNearProducts() {
-    let {left: leftM, width: widthM, right: rightM } = this.posMainElement;
+  findNearProductsNext() {
+    let { left: leftM, width: widthM, right: rightM } = this.posMainElement;
     [].slice.call(this.productsList).forEach((elemen: HTMLElement, index) => {
-      let {left, width, right} = elemen.getBoundingClientRect();
-        if (Math.round(left - 20) === leftM) {
-          this.checkProductalfa(index);
-        }
+      let { left, width, right } = elemen.getBoundingClientRect();
+      if (Math.round(left - 20) === leftM) {
+        this.products[index].state = 'hide';
+      }
+    });
+  }
+  findNearProductsPrev() {
+    let { left: leftM, width: widthM, right: rightM } = this.posMainElement;
+    [].slice.call(this.productsList).forEach((elemen: HTMLElement, index) => {
+      console.log(elemen.getBoundingClientRect());
+      let { left, width, right } = elemen.getBoundingClientRect();
+      if (Math.round(right - 20) === leftM) {
+        this.products[index].state = 'active';
+      }
     });
   }
   checkProductalfa(index: number) {
@@ -79,6 +86,6 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
       this.alfaHide = index - 1;
     }
     this.alfaVisible = index;
-    console.log(this.alfaVisible);
   }
+
 }
