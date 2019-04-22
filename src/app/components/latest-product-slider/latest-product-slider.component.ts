@@ -21,6 +21,12 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
   get posMainElement() {
     return this.sliderWrapper.getBoundingClientRect();
   }
+  get firstElementPosition() {
+    return this.productsList[0].getBoundingClientRect();
+  }
+  get lastElementPosition() {
+    return this.productsList[this.productsList.length - 1].getBoundingClientRect();
+  }
   constructor() {
     window.onresize = function () {
       this.init();
@@ -47,17 +53,29 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
   setStyleWrapper() {
     this.moovDiv.style.transform = 'translate3d(0px, 0px, 100px)';
     this.moovDiv.style.transitionDuration = '0.9s';
-    this.moovDiv.style.transitionDelay = '0.2s';
   }
   nextSlide() {
+    if (this.lastElementPosition.right < this.posMainElement.right) {
+      const pnewPosition = +this.firstElementPosition.width * (this.productsList.length - 5);
+      this.moovDiv.style.transform = 'translate3d(' + -pnewPosition + 'px,' + '0px,' + 100 + 'px' + ')';
+      return;
+    }
     this.findNearProductsNext();
     let position = +this.parseStyle().toFixed(2);
     this.moovDiv.style.transform = 'translate3d(' + (position - +this.firstElement.width.toFixed(2)) + 'px,' + '0px,' + 100 + 'px' + ')';
+  }
+
+  stopWrNext() {
+
   }
   parseStyle(): number {
     return +(this.moovDiv.style.transform.match(/\((-?\d*\.?\d*).*\)/)[1]);
   }
   prevSlide() {
+    if (this.firstElementPosition.left > this.posMainElement.left) {
+      this.moovDiv.style.transform = 'translate3d(' + 0 + 'px,' + '0px,' + 100 + 'px' + ')';
+      return;
+    }
     this.findNearProductsPrev();
     let position = +this.parseStyle().toFixed(2);
     this.moovDiv.style.transform = 'translate3d(' + (position + +this.firstElement.width.toFixed(2)) + 'px,' + '0px,' + 100 + 'px' + ')';
@@ -66,26 +84,22 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     let { left: leftM, width: widthM, right: rightM } = this.posMainElement;
     [].slice.call(this.productsList).forEach((elemen: HTMLElement, index) => {
       let { left, width, right } = elemen.getBoundingClientRect();
-      if (Math.round(left - 20) === leftM) {
-        this.products[index].state = 'hide';
+      if ((Math.round(right - 20) <= (rightM + width)) && (Math.round(left - 20) >= (rightM - width))) {
+        this.products[index].state = 'active';
+        (function (i, context) {
+          setTimeout(() => {
+            console.log(i);
+            context.products[i].state = 'all';
+          }, 800);
+        })(index, this);
       }
     });
   }
   findNearProductsPrev() {
     let { left: leftM, width: widthM, right: rightM } = this.posMainElement;
     [].slice.call(this.productsList).forEach((elemen: HTMLElement, index) => {
-      console.log(elemen.getBoundingClientRect());
       let { left, width, right } = elemen.getBoundingClientRect();
-      if (Math.round(right - 20) === leftM) {
-        this.products[index].state = 'active';
-      }
+
     });
   }
-  checkProductalfa(index: number) {
-    if (String(index) !== '0') {
-      this.alfaHide = index - 1;
-    }
-    this.alfaVisible = index;
-  }
-
 }

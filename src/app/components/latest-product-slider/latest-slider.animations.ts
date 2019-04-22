@@ -1,24 +1,19 @@
-import { trigger, state, style, animate, transition } from '@angular/animations';
+import { trigger, state, group, style, animate, transition } from '@angular/animations';
 export const sliderState = trigger('productNew', [
-  state('hide', style ({
-    opacity: 0,
-    color: 'black',
-    transform: 'translateY(-30px)'
-  })),
-  state('active', style ({
-    opacity: 1,
-    color: 'red',
-    transform: 'translateY(0px)'
-  })),
-  transition('hide => active', [
-    animate('400ms')
-  ]),
-  transition('active => hide', [
-    animate('400ms')
-  ]),
-  transition('* => active', [
-    animate('400ms')
-  ]),
+  transition('all => active', [
+    style({
+      opacity: 0
+    }),
+    group([
+      animate('0s 0.1s ease-in', style({
+        transform: 'scale3d(0.3, 0.3, 0.3)'
+      })),
+      animate('0.9s 0.4s ease', style({
+        opacity: 1,
+        transform: 'scale3d(1, 1, 1)'
+      }))
+    ])
+  ])
 ]);
 
 

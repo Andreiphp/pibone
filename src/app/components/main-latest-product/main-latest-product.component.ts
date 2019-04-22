@@ -18,56 +18,56 @@ export class MainLatestProductComponent implements OnInit {
         title: 'werty',
         price: 'image',
         image: 'product-10.jpg',
-        state: 'active'
+        state: 'all'
     },
       {
         id: '1',
         title: 'werty',
         price: 'image',
         image: 'product-10.jpg',
-        state: 'active'
+        state: 'all'
     },
       {
         id: '1',
         title: 'werty',
         price: 'image',
         image: 'product-10.jpg',
-        state: 'active'
+        state: 'all'
     },
       {
         id: '1',
         title: 'werty',
         price: 'image',
         image: 'product-11.jpg',
-        state: 'active'
+        state: 'all'
     },
       {
         id: '1',
         title: 'werty',
         price: 'image',
         image: 'product-11.jpg',
-        state: 'active'
+        state: 'all'
     },
       {
         id: '1',
         title: 'werty',
         price: 'image',
         image: 'product-11.jpg',
-        state: 'active'
+        state: 'all'
     },
       {
         id: '1',
         title: 'werty',
         price: 'image',
         image: 'product-11.jpg',
-        state: 'active'
+        state: 'all'
     },
       {
         id: '1',
         title: 'werty',
         price: 'image',
         image: 'product-11.jpg',
-        state: 'active'
+        state: 'all'
     },
     ];
 
