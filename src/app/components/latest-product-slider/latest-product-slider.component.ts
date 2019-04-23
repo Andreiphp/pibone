@@ -18,6 +18,8 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
   private moovDiv: HTMLElement;
   private alfaHide;
   private alfaVisible;
+  private offsetX: number;
+  private moovX: number;
   get posMainElement() {
     return this.sliderWrapper.getBoundingClientRect();
   }
@@ -81,25 +83,62 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     this.moovDiv.style.transform = 'translate3d(' + (position + +this.firstElement.width.toFixed(2)) + 'px,' + '0px,' + 100 + 'px' + ')';
   }
   findNearProductsNext() {
-    let { left: leftM, width: widthM, right: rightM } = this.posMainElement;
-    [].slice.call(this.productsList).forEach((elemen: HTMLElement, index) => {
-      let { left, width, right } = elemen.getBoundingClientRect();
-      if ((Math.round(right - 20) <= (rightM + width)) && (Math.round(left - 20) >= (rightM - width))) {
-        this.products[index].state = 'active';
-        (function (i, context) {
-          setTimeout(() => {
-            console.log(i);
-            context.products[i].state = 'all';
-          }, 800);
-        })(index, this);
-      }
+    [].slice.call(this.productsList).forEach((element: HTMLElement, index) => {
+      this.goSlide(true, index, element);
     });
   }
-  findNearProductsPrev() {
-    let { left: leftM, width: widthM, right: rightM } = this.posMainElement;
-    [].slice.call(this.productsList).forEach((elemen: HTMLElement, index) => {
-      let { left, width, right } = elemen.getBoundingClientRect();
 
+  findNearProductsPrev(): void {
+    [].slice.call(this.productsList).forEach((element: HTMLElement, index) => {
+      this.goSlide(false, index, element);
     });
+  }
+  goSlide(bool: boolean, index: number, element: HTMLElement): void {
+    if (this.findConditionMoov(bool, this.posMainElement.left, this.posMainElement.right, element)) {
+      this.products[index].state = 'active';
+      (function (i, context) {
+        setTimeout(() => {
+          context.products[i].state = 'all';
+        }, 800);
+      })(index, this);
+    }
+  }
+  findConditionMoov(flagGoOrBack: boolean, leftM, rightM, element: HTMLElement): boolean {
+    let { left, width, right } = element.getBoundingClientRect();
+    if (flagGoOrBack) {
+      return ((Math.round(right - 20) <= (rightM + width)) && (Math.round(left - 20) >= (rightM - width)));
+    } else {
+      return ((Math.round(left + 20) >= (leftM - width)) && (Math.round(right + 20) <= (leftM + width)));
+    }
+  }
+
+  mouseDoun(event: MouseEvent) {
+    let position = +this.parseStyle().toFixed(2);
+    this.moovDiv.style.transitionDuration = '0s';
+    if (event.which !== 1) {
+      return false;
+    }
+    this.offsetX = event.pageX;
+    document.onmousemove = (even) => {
+      this.moovX = even.pageX - this.offsetX;
+      if (Math.abs(this.moovX) < 3) {
+        return false;
+      }
+      const offsetCurrnt = ((this.offsetX - even.pageX));
+      this.moovDiv.style.transform = 'translate3d(' + (position + -offsetCurrnt) + 'px,' + '0px,' + 100 + 'px' + ')';
+    };
+    document.onmouseup = (e) => {
+      this.moovDiv.style.transitionDuration = '0.9s';
+      this.endSlide(e);
+    };
+  }
+  leaveMouse($event) {
+    this.moovDiv.style.transitionDuration = '0.9s';
+    document.onmousemove = null;
+    document.onmouseup = null;
+  }
+  endSlide($event) {
+    document.onmousemove = null;
+    document.onmouseup = null;
   }
 }
