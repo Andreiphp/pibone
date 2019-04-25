@@ -113,24 +113,37 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
   }
 
   mouseDoun(event: MouseEvent) {
-    let position = +this.parseStyle().toFixed(2);
+
     this.moovDiv.style.transitionDuration = '0s';
     if (event.which !== 1) {
       return false;
     }
     this.offsetX = event.pageX;
+    let position = +this.parseStyle().toFixed(2);
     document.onmousemove = (even) => {
-      this.moovX = even.pageX - this.offsetX;
+      this.moovX = this.offsetX - even.pageX;
       if (Math.abs(this.moovX) < 3) {
         return false;
       }
-      const offsetCurrnt = ((this.offsetX - even.pageX));
-      this.moovDiv.style.transform = 'translate3d(' + (position + -offsetCurrnt) + 'px,' + '0px,' + 100 + 'px' + ')';
+
+      if (this.getOffsetPosition(event)) {
+        this.moovDiv.style.transform = 'translate3d(' + (position + -(this.moovX + 2.8)) + 'px,' + '0px,' + 100 + 'px' + ')';
+      } else {
+        this.moovDiv.style.transform = 'translate3d(' + (position + -this.moovX) + 'px,' + '0px,' + 100 + 'px' + ')';
+      }
     };
     document.onmouseup = (e) => {
-      this.moovDiv.style.transitionDuration = '0.9s';
+      console.log('dfg');
+
       this.endSlide(e);
     };
+  }
+  getOffsetPosition(event): boolean {
+    if (this.firstElementPosition.left > this.posMainElement.left || this.lastElementPosition.right + 5 < this.posMainElement.right) {
+      return true;
+    } else {
+      return false;
+    }
   }
   leaveMouse($event) {
     this.moovDiv.style.transitionDuration = '0.9s';
@@ -138,6 +151,17 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     document.onmouseup = null;
   }
   endSlide($event) {
+    this.moovDiv.style.transitionDuration = '0.9s';
+    let positions = +this.parseStyle().toFixed(2);
+    [].slice.call(this.productsList).forEach((element: HTMLElement, index) => {
+      let { left, width, right } = element.getBoundingClientRect();
+      if (left < this.posMainElement.left && right < (this.posMainElement.left + width)) {
+        const findPosition = this.posMainElement.left - (left - 20);
+        console.log(findPosition);
+        this.moovDiv.style.transform = 'translate3d(' + (positions + findPosition) + 'px,' + '0px,' + 100 + 'px' + ')';
+      }
+    });
+
     document.onmousemove = null;
     document.onmouseup = null;
   }
