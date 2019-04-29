@@ -30,9 +30,10 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     return this.productsList[this.productsList.length - 1].getBoundingClientRect();
   }
   constructor() {
-    window.onresize = function () {
+    window.onresize =  () => {
       this.init();
-    }.bind(this);
+      this.moovDiv.style.transform = 'translate3d(' + 0 + 'px,' + '0px,' + 100 + 'px' + ')';
+    };
   }
 
   ngOnInit() {
@@ -57,14 +58,20 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     this.moovDiv.style.transitionDuration = '0.9s';
   }
   nextSlide() {
+    if (!this.BackFromNext()) {
+      this.findNearProductsNext();
+      let position = +this.parseStyle().toFixed(2);
+      this.moovDiv.style.transform = 'translate3d(' + (position - +this.firstElement.width.toFixed(2)) + 'px,' + '0px,' + 100 + 'px' + ')';
+    }
+  }
+  BackFromNext(): boolean {
     if (this.lastElementPosition.right < this.posMainElement.right) {
       const pnewPosition = +this.firstElementPosition.width * (this.productsList.length - 5);
       this.moovDiv.style.transform = 'translate3d(' + -pnewPosition + 'px,' + '0px,' + 100 + 'px' + ')';
-      return;
+      return true;
+    } else {
+      return false;
     }
-    this.findNearProductsNext();
-    let position = +this.parseStyle().toFixed(2);
-    this.moovDiv.style.transform = 'translate3d(' + (position - +this.firstElement.width.toFixed(2)) + 'px,' + '0px,' + 100 + 'px' + ')';
   }
 
   stopWrNext() {
@@ -74,13 +81,18 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     return +(this.moovDiv.style.transform.match(/\((-?\d*\.?\d*).*\)/)[1]);
   }
   prevSlide() {
+    if (!this.BackFromPrev()) {
+      this.findNearProductsPrev();
+      let position = +this.parseStyle().toFixed(2);
+      this.moovDiv.style.transform = 'translate3d(' + (position + +this.firstElement.width.toFixed(2)) + 'px,' + '0px,' + 100 + 'px' + ')';
+    }
+  }
+  BackFromPrev(): boolean {
     if (this.firstElementPosition.left > this.posMainElement.left) {
       this.moovDiv.style.transform = 'translate3d(' + 0 + 'px,' + '0px,' + 100 + 'px' + ')';
-      return;
+      return true;
     }
-    this.findNearProductsPrev();
-    let position = +this.parseStyle().toFixed(2);
-    this.moovDiv.style.transform = 'translate3d(' + (position + +this.firstElement.width.toFixed(2)) + 'px,' + '0px,' + 100 + 'px' + ')';
+    return false;
   }
   findNearProductsNext() {
     [].slice.call(this.productsList).forEach((element: HTMLElement, index) => {
@@ -96,11 +108,11 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
   goSlide(bool: boolean, index: number, element: HTMLElement): void {
     if (this.findConditionMoov(bool, this.posMainElement.left, this.posMainElement.right, element)) {
       this.products[index].state = 'active';
-      (function (i, context) {
-        setTimeout(() => {
-          context.products[i].state = 'all';
-        }, 800);
-      })(index, this);
+      // (function (i, context) {
+      //   setTimeout(() => {
+      //     context.products[i].state = 'all';
+      //   }, 800);
+      // })(index, this);
     }
   }
   findConditionMoov(flagGoOrBack: boolean, leftM, rightM, element: HTMLElement): boolean {
@@ -113,29 +125,35 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
   }
 
   mouseDoun(event: MouseEvent) {
-
+    let position = +this.parseStyle().toFixed(2);
     this.moovDiv.style.transitionDuration = '0s';
+    this.offsetX = event.pageX;
     if (event.which !== 1) {
       return false;
     }
-    this.offsetX = event.pageX;
-    let position = +this.parseStyle().toFixed(2);
     document.onmousemove = (even) => {
       this.moovX = this.offsetX - even.pageX;
       if (Math.abs(this.moovX) < 3) {
         return false;
       }
-
+      if (Math.abs(this.moovX) > 10) {
+          if (this.moovX > 0) {
+            this.findNearProductsNext();
+          } else {
+            this.findNearProductsPrev();
+          }
+      }
       if (this.getOffsetPosition(event)) {
         this.moovDiv.style.transform = 'translate3d(' + (position + -(this.moovX + 2.8)) + 'px,' + '0px,' + 100 + 'px' + ')';
       } else {
         this.moovDiv.style.transform = 'translate3d(' + (position + -this.moovX) + 'px,' + '0px,' + 100 + 'px' + ')';
       }
-    };
-    document.onmouseup = (e) => {
-      console.log('dfg');
-
-      this.endSlide(e);
+      document.onmouseup = (e) => {
+        this.endSlide(e);
+      };
+      document['onmouseleave'] = (e) => {
+        this.leaveMouse(e);
+      };
     };
   }
   getOffsetPosition(event): boolean {
@@ -146,23 +164,31 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     }
   }
   leaveMouse($event) {
+    console.log('leave');
     this.moovDiv.style.transitionDuration = '0.9s';
-    document.onmousemove = null;
-    document.onmouseup = null;
+    this.endSlide($event);
   }
   endSlide($event) {
     this.moovDiv.style.transitionDuration = '0.9s';
     let positions = +this.parseStyle().toFixed(2);
-    [].slice.call(this.productsList).forEach((element: HTMLElement, index) => {
-      let { left, width, right } = element.getBoundingClientRect();
-      if (left < this.posMainElement.left && right < (this.posMainElement.left + width)) {
-        const findPosition = this.posMainElement.left - (left - 20);
-        console.log(findPosition);
-        this.moovDiv.style.transform = 'translate3d(' + (positions + findPosition) + 'px,' + '0px,' + 100 + 'px' + ')';
-      }
-    });
-
+    if (this.checkfirstAndLastElements()) {
+      [].slice.call(this.productsList).forEach((element: HTMLElement, index) => {
+        this.products[index].state = 'all';
+        let { left, width, right } = element.getBoundingClientRect();
+        if (left < this.posMainElement.left && right < (this.posMainElement.left + width)) {
+          const findPosition = this.posMainElement.left - (left - 20);
+          this.moovDiv.style.transform = 'translate3d(' + (positions + findPosition) + 'px,' + '0px,' + 100 + 'px' + ')';
+        }
+      });
+    }
     document.onmousemove = null;
     document.onmouseup = null;
+    document['onmouseleave'] = null;
+  }
+  checkfirstAndLastElements() {
+    if (!this.BackFromNext() && !this.BackFromPrev()) {
+      return true;
+    }
+    return false;
   }
 }

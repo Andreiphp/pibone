@@ -1,6 +1,7 @@
 <div class="latest-product-slider" #sliderProduct>
+    <!-- (mouseleave)="leaveMouse($event)" -->
     <div class="wr-slider">
-        <div id="sw" class="swipper-wrapper" (mousedown)="mouseDoun($event)" (mouseleave)="leaveMouse($event)" (mouseup)="endSlide($event)">
+        <div id="sw" class="swipper-wrapper" (mousedown)="mouseDoun($event)" (mouseup)="endSlide($event)">
             <app-pre-view-product [attr.t]="product.state" [@productNew]="product.state" [product]="product " *ngFor="let product of products "></app-pre-view-product>
         </div>
     </div>
