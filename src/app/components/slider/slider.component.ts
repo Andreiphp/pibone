@@ -91,6 +91,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
       document.onmousemove = this.movSlider.bind(this);
     }
     document.onmouseup = this.endSlide.bind(this);
+    document['onmouseleave'] = this.leaveMouse.bind(this);
   }
 
   movSlider(event: MouseEvent) {
@@ -108,60 +109,62 @@ export class SliderComponent implements OnInit, AfterViewInit {
     const offsetCurrnt = ((this.dragObject.offsetX - event.pageX) / 2);
     const offsetX = this.shiftnext - (this.dragObject.offsetX - event.pageX);
     const offsetChild = this.shiftChildNext + ((this.dragObject.offsetX - event.pageX) / 2);
-    this.dragSlideShangeParams(-offsetCurrnt, offsetX, offsetChild, offPrev, offPrevCh);
+    if (this.moovX > 0) {
+      this.dragSlideShangeParams(-offsetCurrnt, offsetX, offsetChild, offPrev, offPrevCh, true);
+    } else {
+      this.dragSlideShangeParams(-offsetCurrnt, offsetX, offsetChild, offPrev, offPrevCh, false);
+    }
     this.moobTo = this.moovX;
     this.flagnewSlideMoov = false;
     return false;
   }
-  endSlide(event): void {
+  endSlide(): void {
     if (this.flagToBack) {
       if (Math.abs(this.moovX) > this.InitPosition / 2) {
-        this.setCurentStyle(this.currentSlide, 2, 1, '1s', this.InitPosition / 2, -this.InitPosition);
+        this.setCurentStyle(this.currentSlide, 1, 1, '1s', this.InitPosition / 2, -this.InitPosition);
         this.setCurentStyle(this.nextSlideImg, 3, 1, '1s', 0, 0);
         this.setCurentStyle(this.prevSlideImg, 1, 1, '0s', -this.InitPosition / 2, this.InitPosition);
         setTimeout(() => {
           this.changeNumberSlideTo();
-          this.setCurentStyle(this.nextSlideImg, 1, 1, '1s', -this.InitPosition / 2, this.InitPosition);
+          this.setCurentStyle(this.nextSlideImg, 0, 1, '0s', -this.InitPosition / 2, this.InitPosition);
         });
       } else {
         this.setCurentStyle(this.currentSlide, 2, 1, '1s', 0, 0);
         this.setCurentStyle(this.nextSlideImg, 3, 1, '1s', -this.InitPosition / 2, this.InitPosition);
         this.setCurentStyle(this.prevSlideImg, 1, 1, '0s', this.InitPosition / 2, -this.InitPosition);
-        // this.moovEndSetParam(0, 0, this.InitPosition, -this.InitPosition / 2,
-        //    -this.InitPosition, this.InitPosition / 2, 0, '0s',  3, '1s');
       }
     } else {
       if (Math.abs(this.moovX) > this.InitPosition / 2) {
-        this.setCurentStyle(this.currentSlide, 2, 1, '1s', -this.InitPosition / 2, this.InitPosition);
+        this.setCurentStyle(this.currentSlide, 1, 1, '1s', -this.InitPosition / 2, this.InitPosition);
         this.setCurentStyle(this.prevSlideImg, 3, 1, '1s', 0, 0);
         this.setCurentStyle(this.nextSlideImg, 1, 1, '0s', this.InitPosition / 2, -this.InitPosition);
         setTimeout(() => {
           this.changeNumberSlideBack();
-          this.setCurentStyle(this.prevSlideImg, 1, 1, '1s', -this.InitPosition / 2, this.InitPosition);
+          this.setCurentStyle(this.prevSlideImg, 0, 1, '0s', -this.InitPosition / 2, this.InitPosition);
         });
       } else {
-        // this.moovEndSetParam(0, 0, this.InitPosition, -this.InitPosition / 2,
-        //    -this.InitPosition, this.InitPosition / 2, 3, '1s', 0, '0');
+        this.setCurentStyle(this.currentSlide, 2, 1, '1s', 0, 0);
+        this.setCurentStyle(this.nextSlideImg, 1, 1, '0s', -this.InitPosition / 2, this.InitPosition);
+        this.setCurentStyle(this.prevSlideImg, 3, 1, '1s', this.InitPosition / 2, -this.InitPosition);
       }
     }
     this.flagMoov = false;
     document.onmousemove = null;
     document.onmouseup = null;
-
   }
   leaveMouse(): boolean {
+    console.log('leave');
+    this.endSlide();
     this.flagMoov = false;
     this.moobTo = 0;
     this.moovX = 0;
-    document.onmousemove = null;
-    document.onmouseup = null;
     return false;
   }
 
-  dragSlideShangeParams(offsetCurrnt, offsetX, offsetChild, offPrev, offPrevCh) {
+  dragSlideShangeParams(offsetCurrnt, offsetX, offsetChild, offPrev, offPrevCh, flagDoTO?: boolean) {
     (this.images[this.currentSlide] as any).style.transition = '0s';
     (this.images[this.currentSlide] as any).style.transform = 'translate3d(' + (0) + 'px,' + 0 + 'px,' + 0 + 'px' + ')';
-    (this.DivWrapper[this.currentSlide] as any).style.zIndex = '1';
+    (this.DivWrapper[this.currentSlide] as any).style.zIndex = '0';
     (this.DivWrapper[this.currentSlide] as any).style.transition = '0s';
     (this.DivWrapper[this.currentSlide] as any).style.transform = 'translate3d(' + (offsetCurrnt) + 'px,' + 0 + 'px,' + 0 + 'px' + ')';
     (this.images[this.nextSlideImg] as any).style.transition = '0s';
@@ -172,7 +175,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
     (this.images[this.prevSlideImg] as any).style.transition = '0s';
     (this.images[this.prevSlideImg] as any).style.transform = 'translate3d(' + (offPrevCh) + 'px,' + 0 + 'px,' + 0 + 'px' + ')';
     (this.DivWrapper[this.prevSlideImg] as any).style.transition = '0s';
-    (this.DivWrapper[this.prevSlideImg] as any).style.zIndex = '3';
+    (this.DivWrapper[this.prevSlideImg] as any).style.zIndex = '1';
     (this.DivWrapper[this.prevSlideImg] as any).style.transform = 'translate3d(' + (offPrev) + 'px,' + 0 + 'px,' + 0 + 'px' + ')';
   }
   moovEndSetParamNext(): void {
@@ -225,6 +228,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
     this.flagBtnStart = true;
     window.onresize = () => {
       this.InitPosition = this.getPosotionsElements(this.sliderSection.nativeElement);
+      console.log(this.InitPosition);
       this.currentSlide = 1;
       this.nextSlideImg = 2;
       this.prevSlideImg = 0;

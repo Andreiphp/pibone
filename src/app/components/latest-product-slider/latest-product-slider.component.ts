@@ -30,14 +30,13 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     return this.productsList[this.productsList.length - 1].getBoundingClientRect();
   }
   constructor() {
-    window.onresize =  () => {
-      this.init();
-      this.moovDiv.style.transform = 'translate3d(' + 0 + 'px,' + '0px,' + 100 + 'px' + ')';
-    };
   }
 
   ngOnInit() {
-
+    window.onresize = () => {
+      this.init();
+      this.moovDiv.style.transform = 'translate3d(' + 0 + 'px,' + '0px,' + 100 + 'px' + ')';
+    };
   }
   ngAfterViewInit() {
     window.onload = () => {
@@ -59,7 +58,7 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
   }
   nextSlide() {
     if (!this.BackFromNext()) {
-      this.findNearProductsNext();
+      this.findNearProducts(true, true);
       let position = +this.parseStyle().toFixed(2);
       this.moovDiv.style.transform = 'translate3d(' + (position - +this.firstElement.width.toFixed(2)) + 'px,' + '0px,' + 100 + 'px' + ')';
     }
@@ -73,16 +72,12 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
       return false;
     }
   }
-
-  stopWrNext() {
-
-  }
   parseStyle(): number {
     return +(this.moovDiv.style.transform.match(/\((-?\d*\.?\d*).*\)/)[1]);
   }
   prevSlide() {
     if (!this.BackFromPrev()) {
-      this.findNearProductsPrev();
+      this.findNearProducts(false, true);
       let position = +this.parseStyle().toFixed(2);
       this.moovDiv.style.transform = 'translate3d(' + (position + +this.firstElement.width.toFixed(2)) + 'px,' + '0px,' + 100 + 'px' + ')';
     }
@@ -94,25 +89,22 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     }
     return false;
   }
-  findNearProductsNext() {
+  findNearProducts(flag: boolean, flagReset?: boolean) {
     [].slice.call(this.productsList).forEach((element: HTMLElement, index) => {
-      this.goSlide(true, index, element);
+      this.goSlide(flag, index, element, flagReset);
     });
   }
 
-  findNearProductsPrev(): void {
-    [].slice.call(this.productsList).forEach((element: HTMLElement, index) => {
-      this.goSlide(false, index, element);
-    });
-  }
-  goSlide(bool: boolean, index: number, element: HTMLElement): void {
+  goSlide(bool: boolean, index: number, element: HTMLElement, flagReset?: boolean): void {
     if (this.findConditionMoov(bool, this.posMainElement.left, this.posMainElement.right, element)) {
       this.products[index].state = 'active';
-      // (function (i, context) {
-      //   setTimeout(() => {
-      //     context.products[i].state = 'all';
-      //   }, 800);
-      // })(index, this);
+      if (flagReset) {
+        (function (i, context) {
+          setTimeout(() => {
+            context.products[i].state = 'all';
+          }, 800);
+        })(index, this);
+      }
     }
   }
   findConditionMoov(flagGoOrBack: boolean, leftM, rightM, element: HTMLElement): boolean {
@@ -137,17 +129,13 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
         return false;
       }
       if (Math.abs(this.moovX) > 10) {
-          if (this.moovX > 0) {
-            this.findNearProductsNext();
-          } else {
-            this.findNearProductsPrev();
-          }
+        if (this.moovX > 0) {
+          this.findNearProducts(true);
+        } else {
+          this.findNearProducts(false);
+        }
       }
-      if (this.getOffsetPosition(event)) {
-        this.moovDiv.style.transform = 'translate3d(' + (position + -(this.moovX + 2.8)) + 'px,' + '0px,' + 100 + 'px' + ')';
-      } else {
-        this.moovDiv.style.transform = 'translate3d(' + (position + -this.moovX) + 'px,' + '0px,' + 100 + 'px' + ')';
-      }
+      this.moovDiv.style.transform = 'translate3d(' + (position + -this.moovX) + 'px,' + '0px,' + 100 + 'px' + ')';
       document.onmouseup = (e) => {
         this.endSlide(e);
       };
@@ -164,7 +152,6 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     }
   }
   leaveMouse($event) {
-    console.log('leave');
     this.moovDiv.style.transitionDuration = '0.9s';
     this.endSlide($event);
   }
