@@ -8,7 +8,7 @@ import {
     EventEmitter,
     OnChanges
 } from '@angular/core';
-import {MenuServices} from '../services/menu.service';
+import {MainServices} from '../services/main.service';
 
 
 @Directive({
@@ -19,8 +19,8 @@ export class ShowCartDirective implements OnChanges {
     main: HTMLElement;
     event: CustomEvent;
 
-    constructor(private element: ElementRef, public menu: MenuServices) {
-       
+    constructor(private element: ElementRef, ) {
+
     }
 
     @Input('appShowCart')
@@ -31,8 +31,8 @@ export class ShowCartDirective implements OnChanges {
 
 
     @HostListener('click') onclick() {
-     
-       
+
+
     }
 
 

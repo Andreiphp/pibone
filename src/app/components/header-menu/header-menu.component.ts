@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {MenuServices} from '../../services/menu.service';
 import {openBascket} from './animate';
 
 @Component({
@@ -13,7 +12,7 @@ export class HeaderMenuComponent implements OnInit {
     flegSubCat: boolean;
     flagMainMenu: boolean;
 
-    constructor(public hero: MenuServices) {
+    constructor() {
         this.flagOpenSinCart = false;
         this.flegSubCat = false;
         this.flagMainMenu = false;
@@ -22,13 +21,13 @@ export class HeaderMenuComponent implements OnInit {
         }   else {
             this.flagMainMenu = true;
         }
-        window.onresize = function(event) {
-                this.flegSubCat = false;
-                if (window.innerWidth < 990) {
-                    this.flagMainMenu = true;
-                }
-                this.resize(event);
-        }.bind(this);
+        // window.onresize = function(event) {
+        //         this.flegSubCat = false;
+        //         if (window.innerWidth < 990) {
+        //             this.flagMainMenu = true;
+        //         }
+        //         this.resize(event);
+        // }.bind(this);
     }
     openSinCart() {
         this.flagOpenSinCart = !this.flagOpenSinCart;

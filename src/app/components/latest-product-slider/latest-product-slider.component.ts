@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { sliderState } from '../latest-product-slider/latest-slider.animations';
-
+import { MainServices } from '../../services/main.service';
 @Component({
   selector: 'app-latest-product-slider',
   templateUrl: './latest-product-slider.component.html',
@@ -29,21 +29,21 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
   get lastElementPosition() {
     return this.productsList[this.productsList.length - 1].getBoundingClientRect();
   }
-  constructor() {
-  }
-
-  ngOnInit() {
-    window.onresize = () => {
+  constructor(private _mainSrv: MainServices) {
+    this._mainSrv.subOnResize.subscribe(() => {
       this.init();
       this.moovDiv.style.transform = 'translate3d(' + 0 + 'px,' + '0px,' + 100 + 'px' + ')';
-    };
-  }
-  ngAfterViewInit() {
-    window.onload = () => {
+    });
+    this._mainSrv.subOnload.subscribe(() => {
       this.sliderWrapper = this.domSlider.nativeElement;
       this.init();
       this.setStyleWrapper();
-    };
+    });
+  }
+
+  ngOnInit() {
+  }
+  ngAfterViewInit() {
   }
 
   init() {

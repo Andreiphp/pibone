@@ -1,6 +1,6 @@
 
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-
+import { MainServices } from '../../services/main.service';
 @Component({
   selector: 'app-slider',
   templateUrl: './slider.component.html',
@@ -32,8 +32,19 @@ export class SliderComponent implements OnInit, AfterViewInit {
 
   @ViewChild('sliderSection') sliderSection: ElementRef;
 
-  constructor(public el: ElementRef) {
+  constructor(public el: ElementRef, private _mainSrv: MainServices) {
+    this._mainSrv.subOnResize.subscribe(() => {
+      this.InitPosition = this.getPosotionsElements(this.sliderSection.nativeElement);
+      this.currentSlide = 1;
+      this.nextSlideImg = 2;
+      this.prevSlideImg = 0;
+      this.initSliders();
 
+    });
+    this._mainSrv.subOnload.subscribe(() => {
+      console.log('load');
+
+    });
   }
 
   changeNumberSlideTo() {
@@ -66,7 +77,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
       requestAnimationFrame(this.moovEndSetParamPrev.bind(this));
       setTimeout(() => {
         this.changeNumberSlideBack();
-        this.upsliders();
+
         this.setCurentStyle(this.prevSlideImg, 1, 1, '0s', this.InitPosition / 2, -this.InitPosition);
         this.setCurentStyle(this.nextSlideImg, 1, 1, '0s', -this.InitPosition / 2, this.InitPosition);
         this.flagBtnStart = true;
@@ -119,6 +130,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
     return false;
   }
   endSlide(): void {
+    this.flagBtnStart = false;
     if (this.flagToBack) {
       if (Math.abs(this.moovX) > this.InitPosition / 2) {
         this.setCurentStyle(this.currentSlide, 1, 1, '1s', this.InitPosition / 2, -this.InitPosition);
@@ -127,11 +139,13 @@ export class SliderComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
           this.changeNumberSlideTo();
           this.setCurentStyle(this.nextSlideImg, 0, 1, '0s', -this.InitPosition / 2, this.InitPosition);
+          this.flagBtnStart = true;
         });
       } else {
         this.setCurentStyle(this.currentSlide, 2, 1, '1s', 0, 0);
         this.setCurentStyle(this.nextSlideImg, 3, 1, '1s', -this.InitPosition / 2, this.InitPosition);
         this.setCurentStyle(this.prevSlideImg, 1, 1, '0s', this.InitPosition / 2, -this.InitPosition);
+             this.flagBtnStart = true;
       }
     } else {
       if (Math.abs(this.moovX) > this.InitPosition / 2) {
@@ -141,11 +155,13 @@ export class SliderComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
           this.changeNumberSlideBack();
           this.setCurentStyle(this.prevSlideImg, 0, 1, '0s', -this.InitPosition / 2, this.InitPosition);
+          this.flagBtnStart = true;
         });
       } else {
         this.setCurentStyle(this.currentSlide, 2, 1, '1s', 0, 0);
         this.setCurentStyle(this.nextSlideImg, 1, 1, '0s', -this.InitPosition / 2, this.InitPosition);
         this.setCurentStyle(this.prevSlideImg, 3, 1, '1s', this.InitPosition / 2, -this.InitPosition);
+        this.flagBtnStart = true;
       }
     }
     this.flagMoov = false;
@@ -153,8 +169,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
     document.onmouseup = null;
   }
   leaveMouse(): boolean {
-    console.log('leave');
-    this.endSlide();
+   // this.endSlide();
     this.flagMoov = false;
     this.moobTo = 0;
     this.moovX = 0;
@@ -185,9 +200,6 @@ export class SliderComponent implements OnInit, AfterViewInit {
   moovEndSetParamPrev(): void {
     this.setCurentStyle(this.currentSlide, 2, 1, '1s', -this.InitPosition / 2, this.InitPosition);
     this.setCurentStyle(this.prevSlideImg, 3, 1, '1s', 0, 0);
-  }
-  outAnimate() {
-    console.log('out');
   }
   setCurentStyle(index, zIndex: number, opacity: number, tr: string, imgTranslate: number, divTranslate: number) {
     (this.images[index] as any).style.transition = tr;
@@ -226,15 +238,11 @@ export class SliderComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.flagMoov = false;
     this.flagBtnStart = true;
-    window.onresize = () => {
-      this.InitPosition = this.getPosotionsElements(this.sliderSection.nativeElement);
-      console.log(this.InitPosition);
-      this.currentSlide = 1;
-      this.nextSlideImg = 2;
-      this.prevSlideImg = 0;
-      this.initSliders();
-
-    };
+    // this.InitPosition = this.getPosotionsElements(this.sliderSection.nativeElement);
+    // this.currentSlide = 1;
+    // this.nextSlideImg = 2;
+    // this.prevSlideImg = 0;
+    // this.initSliders();
     window.ondragstart = () => false;
     this.moovX = 0;
   }
@@ -243,9 +251,8 @@ export class SliderComponent implements OnInit, AfterViewInit {
       if (i !== this.currentSlide) {
         this.resetStyle(i, 1, 0, '0s');
       }
-
     }
-    this.resetStyle(this.currentSlide, 3, 1, '1s');
+    // this.resetStyle(this.currentSlide, 3, 1, '1s');
   }
   initSliders() {
     this.countSliders = this.DivWrapper.length - 1;
