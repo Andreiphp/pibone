@@ -21,6 +21,12 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
   get posMainElement() {
     return this.sliderWrapper.getBoundingClientRect();
   }
+  get positionFirstElement() {
+    return this.productsList[0].getBoundingClientRect();
+  }
+  get positionLastElement() {
+    return this.productsList[this.productsList.length - 1].getBoundingClientRect();
+  }
   constructor() {
     window.onresize = function () {
       this.init();
@@ -40,27 +46,35 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
 
   init() {
     this.moovDiv = this.sliderWrapper.querySelector('#sw');
-    this.productsList = this.sliderWrapper.getElementsByTagName('app-pre-view-product');
+    this.productsList = this.sliderWrapper.getElementsByClassName('slider-wr-prod');
     this.firstElement = this.productsList[0].getBoundingClientRect();
     this.lastElement = this.productsList[this.productsList.length - 1].getBoundingClientRect();
   }
   setStyleWrapper() {
-    this.moovDiv.style.transform = 'translate3d(0px, 0px, 100px)';
-    this.moovDiv.style.transitionDuration = '0.9s';
-    this.moovDiv.style.transitionDelay = '0.2s';
+    this.moovDiv.style.transform = 'translate3d(0px, 0px, 0px)';
   }
   nextSlide() {
+    if ((this.positionLastElement.right + 20) === this.posMainElement.right) {
+      return;
+    }
     this.findNearProductsNext();
     let position = +this.parseStyle().toFixed(2);
-    this.moovDiv.style.transform = 'translate3d(' + (position - +this.firstElement.width.toFixed(2)) + 'px,' + '0px,' + 100 + 'px' + ')';
+    requestAnimationFrame(() => {
+      this.moovDiv.style.transform = 'translate3d(' + (position - +this.firstElement.width.toFixed(2)) + 'px,' + '0px,' + 100 + 'px' + ')';
+    });
   }
   parseStyle(): number {
     return +(this.moovDiv.style.transform.match(/\((-?\d*\.?\d*).*\)/)[1]);
   }
   prevSlide() {
+    if ((this.positionFirstElement.left - 20) === this.posMainElement.left || this.positionFirstElement.left > this.posMainElement.left) {
+      return;
+    }
     this.findNearProductsPrev();
     let position = +this.parseStyle().toFixed(2);
-    this.moovDiv.style.transform = 'translate3d(' + (position + +this.firstElement.width.toFixed(2)) + 'px,' + '0px,' + 100 + 'px' + ')';
+    requestAnimationFrame(() => {
+      this.moovDiv.style.transform = 'translate3d(' + (position + +this.firstElement.width.toFixed(2)) + 'px,' + '0px,' + 100 + 'px' + ')';
+    });
   }
   findNearProductsNext() {
     let { left: leftM, width: widthM, right: rightM } = this.posMainElement;
@@ -69,15 +83,20 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
       if (Math.round(left - 20) === leftM) {
         this.products[index].state = 'hide';
       }
+      if (Math.round(left + 20) === rightM) {
+        this.products[index].state = 'active';
+      }
     });
   }
   findNearProductsPrev() {
     let { left: leftM, width: widthM, right: rightM } = this.posMainElement;
     [].slice.call(this.productsList).forEach((elemen: HTMLElement, index) => {
-      console.log(elemen.getBoundingClientRect());
       let { left, width, right } = elemen.getBoundingClientRect();
       if (Math.round(right - 20) === leftM) {
         this.products[index].state = 'active';
+      }
+      if (Math.round(right + 20) === rightM) {
+        this.products[index].state = 'hide';
       }
     });
   }
@@ -87,5 +106,15 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     }
     this.alfaVisible = index;
   }
-
+  setStateAnimate() {
+    let { left: leftM, width: widthM, right: rightM } = this.posMainElement;
+    console.log(leftM);
+    [].slice.call(this.productsList).forEach(product => {
+      let { left, width, right } = product.getBoundingClientRect();
+      console.log(left)
+      if ((leftM > (left + 20)) && ((left + 20) <= (leftM - width))) {
+        console.log(product);
+      }
+    });
+  }
 }

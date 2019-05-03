@@ -3,20 +3,17 @@ export const sliderState = trigger('productNew', [
   state('hide', style ({
     opacity: 0,
     color: 'black',
-    transform: 'translateY(-30px)'
+    transform: 'scale3d(0.3, 0.3, 0.3)'
   })),
   state('active', style ({
     opacity: 1,
     color: 'red',
-    transform: 'translateY(0px)'
+    transform: 'scale3d(1, 1, 1)'
   })),
   transition('hide => active', [
     animate('400ms')
   ]),
   transition('active => hide', [
-    animate('400ms')
-  ]),
-  transition('* => active', [
     animate('400ms')
   ]),
 ]);

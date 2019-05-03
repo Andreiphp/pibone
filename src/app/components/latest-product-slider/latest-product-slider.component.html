@@ -1,7 +1,9 @@
 <div class="latest-product-slider" #sliderProduct>
     <div class="wr-slider">
         <div id="sw" class="swipper-wrapper">
-            <app-pre-view-product [attr.t]="product.state" [@productNew]="product.state" [product]="product " *ngFor="let product of products "></app-pre-view-product>
+            <div class="slider-wr-prod" *ngFor="let product of products ">
+                <app-pre-view-product [attr.t]="product.state" [@productNew]="product.state" [product]="product " ></app-pre-view-product>
+            </div>
         </div>
     </div>
     <div class="arrow-next" (click)="nextSlide()">
