@@ -19,7 +19,7 @@ import { ErrorInterseptorService } from './services/error-interseptor.service';
 import { HeaderMenuComponent } from './components/header-menu/header-menu.component';
 import { ShowCartDirective } from './directives/show-cart.directive';
 import { SliderComponent } from './components/slider/slider.component';
-import { MenuServices } from './services/menu.service';
+import { MainServices } from './services/main.service';
 import { MainSectionComponent } from './components/main-section/main-section.component';
 import { MainLatestProductComponent } from './components/main-latest-product/main-latest-product.component';
 import { TestComponent } from './components/test/test.component';
@@ -59,7 +59,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterseptorService, multi: true },
     RequestsService,
-    MenuServices
+    MainServices
   ],
   bootstrap: [AppComponent]
 })
