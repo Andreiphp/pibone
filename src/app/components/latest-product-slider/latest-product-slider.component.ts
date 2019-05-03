@@ -54,9 +54,6 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     this.moovDiv.style.transform = 'translate3d(0px, 0px, 0px)';
   }
   nextSlide() {
-    if ((this.positionLastElement.right + 20) === this.posMainElement.right) {
-      return;
-    }
     this.findNearProductsNext();
     let position = +this.parseStyle().toFixed(2);
     requestAnimationFrame(() => {
@@ -67,9 +64,6 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     return +(this.moovDiv.style.transform.match(/\((-?\d*\.?\d*).*\)/)[1]);
   }
   prevSlide() {
-    if ((this.positionFirstElement.left - 20) === this.posMainElement.left || this.positionFirstElement.left > this.posMainElement.left) {
-      return;
-    }
     this.findNearProductsPrev();
     let position = +this.parseStyle().toFixed(2);
     requestAnimationFrame(() => {
