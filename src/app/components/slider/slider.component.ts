@@ -41,18 +41,20 @@ export class SliderComponent implements OnInit, AfterViewInit {
       this.nextSlideImg = 2;
       this.prevSlideImg = 0;
       this.initSliders();
-
     });
-    this._mainSrv.subOnload.subscribe(() => {
-      this.dretting.addEventListener('transitionend', () => {
-        if (this.flagToBack) {
-          this.changeNumberSlideTo();
-          this.flagBtnStart = true;
-        } else {
-          this.changeNumberSlideBack();
-          this.flagBtnStart = true;
-        }
-      });
+    // this._mainSrv.subOnload.subscribe(() => {
+
+    // });
+  }
+  transotionendV() {
+    this.dretting.addEventListener('transitionend', () => {
+      if (this.flagToBack) {
+        this.changeNumberSlideTo();
+        this.flagBtnStart = true;
+      } else {
+        this.changeNumberSlideBack();
+        this.flagBtnStart = true;
+      }
     });
   }
 
@@ -243,6 +245,7 @@ export class SliderComponent implements OnInit, AfterViewInit {
     this.navBtn = this.sliderSection.nativeElement.querySelectorAll('.nav-slide');
     this.InitPosition = this.getPosotionsElements(this.sliderSection.nativeElement);
     this.initSliders();
+    this.transotionendV();
   }
 
 

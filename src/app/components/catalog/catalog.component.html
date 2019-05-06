@@ -1,7 +1,111 @@
-<p>
-  catalog works!
-</p>
-<button (click)="isVisible = !isVisible">check</button>
-<div
-[@divTrigger] = "isVisible ? 'show' : 'hide'"
-*ngIf ="isVisible">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas reprehenderit, voluptatem, et laudantium quasi nulla eos harum officia, odio quas est. Atque minus fugit aperiam. Ducimus dolor nisi exercitationem consequuntur!</div>
+<div class="wr">
+    <div class="center">
+      <div class="row">
+          <div class="catal-left">
+            <aside id="catal-filter">
+                <div class="catal-block">
+                  <h2 class="catal-title">
+                    Каталог
+                  </h2>
+                  <div class="catal-list">
+                    <ul>
+                      <li><a>Первая категория</a></li>
+                      <li><a>Первая категория</a></li>
+                      <li><a>Первая категория</a></li>
+                      <li><a>Первая категория</a></li>
+                      <li><a>Первая категория</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="catal-block">
+                    <h2 class="catal-title">
+                     Бренды
+                    </h2>
+                    <div class="catal-list">
+                      <ul>
+                        <li><label>
+                            Shoes (198)
+                            <input type="checkbox">
+                        </label></li>
+                        <li><label>
+                            Shoes (198)
+                            <input type="checkbox">
+                        </label></li>
+                        <li><label>
+                            Shoes (198)
+                            <input type="checkbox">
+                        </label></li>
+                        <li><label>
+                            Shoes (198)
+                            <input type="checkbox">
+                        </label></li>
+                        <li><label>
+                            Shoes (198)
+                            <input type="checkbox">
+                        </label></li>
+                        <li><label>
+                            Shoes (198)
+                            <input type="checkbox">
+                        </label></li>
+                        <li><label>
+                            Shoes (198)
+                            <input type="checkbox">
+                        </label></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="catal-block">
+                      <h2 class="catal-title">
+                       Цены
+                      </h2>
+                      <div class="catal-list">
+                        <ul>
+                          <li><label>
+                              Shoes (198$ - 12$)
+                              <input type="checkbox" value="1">
+                          </label></li>
+                          <li><label>
+                              Shoes (198$ - 12$)
+                              <input type="checkbox" value="1">
+                          </label></li>
+                          <li><label>
+                              Shoes (198$ - 12$)
+                              <input type="checkbox" value="1">
+                          </label></li>
+                          <li><label>
+                              Shoes (198$ - 12$)
+                              <input type="checkbox" value="1">
+                          </label></li>
+                          <li><label>
+                              Shoes (198$ - 12$)
+                              <input type="checkbox" value="1">
+                          </label></li>
+                        </ul>
+                      </div>
+                    </div>
+            </aside>
+            </div>
+            <div class="catal-right">
+              <main>
+                <div class="catal-nav-top">
+                  <div class="catal-tool-bar">
+                    <div class="catal-tool-inner">
+                      <div class="catal-view-mode">
+                          <ul>
+                            <li><i class="fa fa-address-book"></i></li>
+                            <li><i class="fa fa-address-book"></i></li>
+                          </ul>
+                      </div>
+                      <div class="catal-tool-count">
+
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </main>
+            </div>
+      </div>
+    </div>
+  </div>

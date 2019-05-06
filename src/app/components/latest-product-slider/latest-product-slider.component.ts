@@ -1,13 +1,15 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { sliderState } from '../latest-product-slider/latest-slider.animations';
 import { MainServices } from '../../services/main.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-latest-product-slider',
   templateUrl: './latest-product-slider.component.html',
   styleUrls: ['./latest-product-slider.component.sass'],
   animations: [sliderState],
 })
-export class LatestProductSliderComponent implements OnInit, AfterViewInit {
+export class LatestProductSliderComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() products;
   @ViewChild('sliderProduct')
   domSlider: ElementRef;
@@ -20,6 +22,7 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
   private alfaVisible;
   private offsetX: number;
   private moovX: number;
+  private unSubscribe: Subject<any> = new Subject();
   get posMainElement() {
     return this.sliderWrapper.getBoundingClientRect();
   }
@@ -30,20 +33,27 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     return this.productsList[this.productsList.length - 1].getBoundingClientRect();
   }
   constructor(private _mainSrv: MainServices) {
-    this._mainSrv.subOnResize.subscribe(() => {
+    this._mainSrv.subOnResize.pipe(takeUntil(this.unSubscribe)).subscribe(() => {
       this.init();
       this.moovDiv.style.transform = 'translate3d(' + 0 + 'px,' + '0px,' + 100 + 'px' + ')';
     });
-    this._mainSrv.subOnload.subscribe(() => {
-      this.sliderWrapper = this.domSlider.nativeElement;
-      this.init();
-      this.setStyleWrapper();
-    });
+    // this._mainSrv.subOnload.pipe(takeUntil(this.unSubscribe)).subscribe(() => {
+
+    // });
   }
 
   ngOnInit() {
+    console.log('');
+
   }
   ngAfterViewInit() {
+    this.sliderWrapper = this.domSlider.nativeElement;
+    this.init();
+    this.setStyleWrapper();
+  }
+  ngOnDestroy() {
+    this.unSubscribe.next();
+    this.unSubscribe.complete();
   }
 
   init() {
@@ -120,7 +130,6 @@ export class LatestProductSliderComponent implements OnInit, AfterViewInit {
     let position = +this.parseStyle().toFixed(2);
     this.moovDiv.style.transitionDuration = '0s';
     this.offsetX = event.pageX;
-    console.log('efw');
     if (event.which !== 1) {
       return false;
     }

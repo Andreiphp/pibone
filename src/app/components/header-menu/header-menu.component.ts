@@ -1,5 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {openBascket} from './animate';
+import {MainServices} from '../../services/main.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'app-header-menu',
@@ -7,12 +10,15 @@ import {openBascket} from './animate';
     styleUrls: ['./header-menu.component.sass'],
     animations: [openBascket]
 })
-export class HeaderMenuComponent implements OnInit {
+export class HeaderMenuComponent implements OnInit, OnDestroy {
     flagOpenSinCart: boolean;
     flegSubCat: boolean;
     flagMainMenu: boolean;
+    private unSubscribe: Subject<any> = new Subject();
 
-    constructor() {
+    constructor(
+        private main_srv: MainServices,
+    ) {
         this.flagOpenSinCart = false;
         this.flegSubCat = false;
         this.flagMainMenu = false;
@@ -21,13 +27,13 @@ export class HeaderMenuComponent implements OnInit {
         }   else {
             this.flagMainMenu = true;
         }
-        // window.onresize = function(event) {
-        //         this.flegSubCat = false;
-        //         if (window.innerWidth < 990) {
-        //             this.flagMainMenu = true;
-        //         }
-        //         this.resize(event);
-        // }.bind(this);
+        this.main_srv.subOnResize.pipe(takeUntil(this.unSubscribe)).subscribe(() => {
+                this.flegSubCat = false;
+                if (window.innerWidth < 990) {
+                    this.flagMainMenu = true;
+                }
+                this.resize(event);
+        });
     }
     openSinCart() {
         this.flagOpenSinCart = !this.flagOpenSinCart;
@@ -61,6 +67,10 @@ export class HeaderMenuComponent implements OnInit {
     }
 
     ngOnInit() {
+    }
+    ngOnDestroy() {
+        this.unSubscribe.next();
+        this.unSubscribe.complete();
     }
 
 }

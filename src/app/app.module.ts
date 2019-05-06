@@ -51,7 +51,6 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserAnimationsModule,
     AppRouterModule,
     AngularFontAwesomeModule,
   ],
