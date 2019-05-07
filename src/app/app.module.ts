@@ -26,6 +26,7 @@ import { TestComponent } from './components/test/test.component';
 import { LatestProductSliderComponent } from './components/latest-product-slider/latest-product-slider.component';
 import { PreViewProductComponent } from './components/pre-view-product/pre-view-product.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import { PaginationComponent } from './components/pagination/pagination.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +44,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
     MainLatestProductComponent,
     TestComponent,
     LatestProductSliderComponent,
-    PreViewProductComponent
+    PreViewProductComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,
