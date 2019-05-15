@@ -27,6 +27,7 @@ import { LatestProductSliderComponent } from './components/latest-product-slider
 import { PreViewProductComponent } from './components/pre-view-product/pre-view-product.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { PaginationComponent } from './components/pagination/pagination.component';
+import {PaginationServices} from './services/pagination.services';
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,7 +61,8 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterseptorService, multi: true },
     RequestsService,
-    MainServices
+    MainServices,
+    PaginationServices,
   ],
   bootstrap: [AppComponent]
 })

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import {PaginationServices} from '../../services/pagination.services';
 
 @Component({
   selector: 'app-pagination',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PaginationComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private pagSrv: PaginationServices
+  ) { }
 
   ngOnInit() {
+    this.pagSrv.getCountAllPages().subscribe(data => {
+      console.log(data);
+    });
   }
 
 }
