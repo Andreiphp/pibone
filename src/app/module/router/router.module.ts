@@ -18,8 +18,8 @@ const childrenRouter: Routes = [
 const routes: Routes = [
     { path: '', component: MainComponent },
    // { path: 'catalog', component: CatalogComponent, pathMatch: 'full', data: { animation: 'catalogAnimate' }},
+   { path: 'catalog/:category', component: CatalogComponent, pathMatch: 'full',  data: { animation: 'catalogAnimate' } },
     { path: 'catalog/:category/:page', component: CatalogComponent, pathMatch: 'full' },
-    { path: 'catalog/:category', component: CatalogComponent, pathMatch: 'full',  data: { animation: 'catalogAnimate' } },
     { path: 'view-product', component: ViewProductComponent, pathMatch: 'full' },
     { path: 'login', component: LoginComponent, pathMatch: 'full' },
     { path: 'admin', component: AdminComponent, canActivate: [AuthGuard], children: childrenRouter },
